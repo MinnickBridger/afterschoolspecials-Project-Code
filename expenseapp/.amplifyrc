@@ -1,0 +1,14 @@
+{
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "expenseapp-20181014164928-authRole",
+            "UnauthRoleArn": "arn:aws:iam::740216530852:role/expenseapp-20181014164928-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::740216530852:role/expenseapp-20181014164928-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "expenseapp-20181014164928-deployment",
+            "UnauthRoleName": "expenseapp-20181014164928-unauthRole",
+            "StackName": "expenseapp-20181014164928",
+            "StackId": "arn:aws:cloudformation:us-east-1:740216530852:stack/expenseapp-20181014164928/686f8b20-d003-11e8-b9a4-500c2854b635"
+        }
+    }
+}
