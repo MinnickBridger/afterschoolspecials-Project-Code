@@ -1,0 +1,120 @@
+type TestType {
+  id: ID!
+  title: String!
+  content: String!
+  price: Int
+  rating: Float
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelTestTypeConnection {
+  items: [TestType]
+  nextToken: String
+}
+
+input ModelStringFilterInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+}
+
+input ModelIDFilterInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+}
+
+input ModelIntFilterInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  contains: Int
+  notContains: Int
+  between: [Int]
+}
+
+input ModelFloatFilterInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  contains: Float
+  notContains: Float
+  between: [Float]
+}
+
+input ModelBooleanFilterInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelTestTypeFilterInput {
+  id: ModelIDFilterInput
+  title: ModelStringFilterInput
+  content: ModelStringFilterInput
+  price: ModelIntFilterInput
+  rating: ModelFloatFilterInput
+  and: [ModelTestTypeFilterInput]
+  or: [ModelTestTypeFilterInput]
+  not: ModelTestTypeFilterInput
+}
+
+type Query {
+  getTestType(id: ID!): TestType
+  listTestTypes(filter: ModelTestTypeFilterInput, limit: Int, nextToken: String): ModelTestTypeConnection
+}
+
+input CreateTestTypeInput {
+  id: ID
+  title: String!
+  content: String!
+  price: Int
+  rating: Float
+}
+
+input UpdateTestTypeInput {
+  id: ID!
+  title: String
+  content: String
+  price: Int
+  rating: Float
+}
+
+input DeleteTestTypeInput {
+  id: ID
+}
+
+type Mutation {
+  createTestType(input: CreateTestTypeInput!): TestType
+  updateTestType(input: UpdateTestTypeInput!): TestType
+  deleteTestType(input: DeleteTestTypeInput!): TestType
+}
+
+type Subscription {
+  onCreateTestType: TestType @aws_subscribe(mutations: ["createTestType"])
+  onUpdateTestType: TestType @aws_subscribe(mutations: ["updateTestType"])
+  onDeleteTestType: TestType @aws_subscribe(mutations: ["deleteTestType"])
+}

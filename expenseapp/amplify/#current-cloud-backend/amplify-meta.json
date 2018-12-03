@@ -1,0 +1,74 @@
+{
+	"providers": {
+		"awscloudformation": {
+			"AuthRoleName": "expenseapp-20181114102544-authRole",
+			"UnauthRoleArn": "arn:aws:iam::740216530852:role/expenseapp-20181114102544-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::740216530852:role/expenseapp-20181114102544-authRole",
+			"Region": "us-east-1",
+			"DeploymentBucketName": "expenseapp-20181114102544-deployment",
+			"UnauthRoleName": "expenseapp-20181114102544-unauthRole",
+			"StackName": "expenseapp-20181114102544",
+			"StackId": "arn:aws:cloudformation:us-east-1:740216530852:stack/expenseapp-20181114102544/51f045f0-e832-11e8-afc1-500c212ff6fd"
+		}
+	},
+	"hosting": {
+		"S3AndCloudFront": {
+			"service": "S3AndCloudFront",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/expenseapp-20181114102544-deployment/amplify-cfn-templates/hosting/template.json",
+				"logicalId": "hostingS3AndCloudFront"
+			},
+			"lastPushTimeStamp": "2018-11-14T17:42:18.248Z",
+			"output": {
+				"S3BucketSecureURL": "https://expenseapp-20181114102808--hostingbucket.s3.amazonaws.com",
+				"WebsiteURL": "http://expenseapp-20181114102808--hostingbucket.s3-website-us-east-1.amazonaws.com",
+				"Region": "us-east-1",
+				"HostingBucketName": "expenseapp-20181114102808--hostingbucket"
+			},
+			"lastPushDirHash": "jwizsvfkFv/+y6Qz6A0EzOV5a40="
+		}
+	},
+	"auth": {
+		"cognito8d7176bc": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/expenseapp-20181114102544-deployment/amplify-cfn-templates/auth/cognito8d7176bc-cloudformation-template.yml",
+				"logicalId": "authcognito8d7176bc"
+			},
+			"lastPushTimeStamp": "2018-11-14T17:42:18.250Z",
+			"output": {
+				"AppClientSecret": "lokg4js8b5fuop5b2hd6jmvc7m73m30oq7hp5ru77tv9bds3hvi",
+				"UserPoolId": "us-east-1_664L9gHAy",
+				"AppClientIDWeb": "iduqn34m2jc1fmg83fcv7umk8",
+				"AppClientID": "22sc1qqsilournp0bvklvtl413",
+				"IdentityPoolId": "us-east-1:f1103dd2-aa42-4966-a13b-b5ca5a1db2ed",
+				"IdentityPoolName": "cognito8d7176bc_identitypool_8d7176bc",
+				"UserPoolName": "cognito8d7176bc_userpool_8d7176bc"
+			},
+			"lastPushDirHash": "xbgZBPOF1PNDRGIr6GWga8i7DRo="
+		}
+	},
+	"api": {
+		"ExpenseApp": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"securityType": "AMAZON_COGNITO_USER_POOLS",
+				"GraphQLAPIIdOutput": "l3brecyxpvdmpgi3v7a3v2wbe4",
+				"GraphQLAPIEndpointOutput": "https://3kxl3c5yv5fxrm5alh6bjda54e.appsync-api.us-east-1.amazonaws.com/graphql",
+				"GraphQLAPIKeyOutput": "da2-ng2rrrjnozf5beirph3lvxqbsm",
+				"AuthCognitoUserPoolIdOutput": "us-east-1_664L9gHAy",
+				"AuthCognitoUserPoolNativeClientId": "See UserPool: us-east-1_664L9gHAy",
+				"AuthCognitoUserPoolJSClientId": "See UserPool: us-east-1_664L9gHAy"
+			},
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/expenseapp-20181114102544-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+				"logicalId": "apiExpenseApp"
+			},
+			"lastPushTimeStamp": "2018-11-14T17:42:18.256Z",
+			"lastPushDirHash": "VHTkXwniy61HzW3PJ8Fvvv2ATvY="
+		}
+	}
+}

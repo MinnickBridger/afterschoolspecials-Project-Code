@@ -1,0 +1,20 @@
+{
+    "projectName": "expenseapp",
+    "projectPath": "/Users/mvaldez/expense-app",
+    "defaultEditor": "code",
+    "frontendHandler": {
+        "javascript": "/Users/mvaldez/.nvm/versions/node/v8.11.3/lib/node_modules/@aws-amplify/cli/node_modules/amplify-frontend-javascript"
+    },
+    "javascript": {
+        "framework": "react",
+        "config": {
+            "SourceDir": "src",
+            "DistributionDir": "build",
+            "BuildCommand": "yarn build",
+            "StartCommand": "yarn start"
+        }
+    },
+    "providers": {
+        "awscloudformation": "/Users/mvaldez/.nvm/versions/node/v8.11.3/lib/node_modules/@aws-amplify/cli/node_modules/amplify-provider-awscloudformation"
+    }
+}
