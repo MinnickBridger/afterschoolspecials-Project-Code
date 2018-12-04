@@ -15,7 +15,7 @@ class App extends Component {
       user: null,
       budget: null,
       categorySelectedForDelete: null,
-      newBudgetMax: null,
+      newBudgetMax: '',
       newCategoryTitle: "",
       newCategoryPrecent: "",
       newExpensePrice: "",
@@ -63,15 +63,7 @@ class App extends Component {
 
   render() {
     const { user, hasLoadedBudget, budget, creatingCategory, creatingExpense, newCategoryPrecent, newCategoryTitle, newExpenseCategory, newExpensePrice, newExpenseDesc, creatingCategoryError, creatingExpenseError } = this.state
-    // if (user) {
-    //   return (
-    //     <div className="App">
-    //       <body>
-    //         <p>{JSON.stringify(user)}</p>
-    //       </body>
-    //     </div>
-    //   )
-    // }
+
     if (!hasLoadedBudget) {
       return (
         <div className="App">
@@ -109,7 +101,6 @@ class App extends Component {
                   <Icon name='remove' /> No
 </Button>
                 <Button color='green' inverted onClick={() => {
-                  console.log("IS bridger right?", index)
                   this.deleteCategory(this.state.categorySelectedForDelete)
                   this.handleClose()
                 }}>
@@ -136,10 +127,6 @@ class App extends Component {
       return (
         <div className="App">
           <body style={{ paddingTop: 15 }}>
-            {/* <Container style={{ marginTop: 10 }}>
-              <Label>{JSON.stringify(budget)}</Label>
-            </Container>
-            <Divider /> */}
             <div style={{ margin: 10 }}>
               <Label>Total Monthly Budget: ${budget.maxBudget}</Label>
             </div>
@@ -174,7 +161,7 @@ class App extends Component {
                         }} />
                       </Form.Field>
                       <Form.Field>
-                        <Input value={newCategoryPrecent} placeholder="Precent ex. 0.3" onChange={(e, { value }) => {
+                        <Input value={newCategoryPrecent} placeholder="Percent ex. 0.3" onChange={(e, { value }) => {
                           this.setState({ newCategoryPrecent: value })
                         }} />
                       </Form.Field>
@@ -236,12 +223,12 @@ class App extends Component {
                 <Label>Let's create your monthly budget!</Label>
               </div>
               <div style={{ marginTop: 10 }}>
-                <Input label="$" placeholder="Enter your monthly budget" fluid onChange={(e, { value }) => {
-                  this.setState({ newBudgetMax: value })
+                <Input error={isNaN(this.state.newBudgetMax)} label="$" placeholder="Enter your monthly budget" fluid onChange={(e, { value }) => {
+                    this.setState({ newBudgetMax: value })
                 }} />
               </div>
               <div style={{ marginTop: 10 }}>
-                <Button onClick={this.createUserBudget} primary>Create!</Button>
+                <Button disabled={isNaN(this.state.newBudgetMax) || this.state.newBudgetMax == ''} onClick={this.createUserBudget} primary>Create!</Button>
               </div>
             </Container>
           </body>
@@ -360,24 +347,22 @@ class App extends Component {
         })
       })
       .catch(err => {
-        console.log("MJV ERROR => ", err)
+
       })
   }
 
   createCategory() {
     const { newCategoryPrecent, newCategoryTitle, budget } = this.state
     if (isNaN(newCategoryPrecent)) {
-      this.setState({ creatingCategoryError: "Precent must be a decimal" })
+      this.setState({ creatingCategoryError: "Percent must be a decimal" })
       return
     }
     if (Number.parseFloat(newCategoryPrecent) * 100 > this.calculateRemainingTotalBudget()) {
-      this.setState({ creatingCategoryError: "Cannot exceed available remaining precent of " + this.calculateRemainingTotalBudget().toFixed(0) + "%" })
+      this.setState({ creatingCategoryError: "Cannot exceed available remaining percent of " + this.calculateRemainingTotalBudget().toFixed(0) + "%" })
       return
     }
     if (newCategoryPrecent != "" && newCategoryTitle != "") {
-      this.setState({ creatingCategory: true })
-      console.log("New Category Title =>", newCategoryTitle)
-      console.log("New Category Precent =>", Number.parseFloat(newCategoryPrecent))
+      this.setState({ creatingCategory: true })      
       const createCategoryQuery = `mutation ($budgetId: String!, $title: String!, $precent: Float) {
         createBudgetCategory(input: {budgetID: $budgetId, title: $title, precent: $precent}) {
           id
@@ -388,16 +373,11 @@ class App extends Component {
       const parameters = { "budgetId": budget.id, "title": newCategoryTitle, "precent": Number.parseFloat(newCategoryPrecent) }
       API.graphql(graphqlOperation(createCategoryQuery, parameters))
         .then(results => {
-          console.log(results)
           this.getUserBudget()
-          console.log("MJV", this.newCategoryTitleInput)
           this.setState({ creatingCategory: false, newCategoryTitle: "", newCategoryPrecent: "", creatingCategoryError: null })
-          console.log(this.newCategoryTitleInput)
-
-
         })
         .catch(err => {
-          console.log("MJV ERROR => ", err)
+          console.log(err)
         })
     }
   }
@@ -410,8 +390,6 @@ class App extends Component {
     }
     if (newExpenseCategory && newExpensePrice != "" && newExpenseDesc != "") {
       this.setState({ creatingExpense: true })
-      console.log("New Expense Category =>", newExpenseCategory)
-      console.log("New Expense Price =>", Number.parseFloat(newExpensePrice))
       const createExpenseQuery = `mutation ($budgetId: String!, $userId: String! $categoryId: String!, $price: Float!, $title: String!) {
         createLineItem(input: {budgetID: $budgetId, userID: $userId, categoryID: $categoryId, price: $price, title: $title}) {
           id
@@ -422,12 +400,11 @@ class App extends Component {
       const parameters = { "budgetId": budget.id, "userId": budget.userID, "categoryId": newExpenseCategory, "price": Number.parseFloat(newExpensePrice), "title": newExpenseDesc }
       API.graphql(graphqlOperation(createExpenseQuery, parameters))
         .then(results => {
-          console.log(results)
           this.getUserBudget()
           this.setState({ creatingExpense: false, newExpenseCategory: null, newExpensePrice: "", newExpenseDesc: "", creatingExpenseError: null })
         })
         .catch(err => {
-          console.log("MJV ERROR => ", err)
+          console.log(err)
         })
     }
   }
@@ -448,7 +425,7 @@ class App extends Component {
         this.getUserBudget()
       })
       .catch(err => {
-        console.log("MJV ERROR DELETING EXPENSE => ", err)
+        console.log(err)
       })
   }
 
@@ -473,7 +450,7 @@ class App extends Component {
         this.getUserBudget()
       })
       .catch(err => {
-        console.log("MJV ERROR DELETING EXPENSE => ", err)
+        console.log(err)
       })
   }
 }
