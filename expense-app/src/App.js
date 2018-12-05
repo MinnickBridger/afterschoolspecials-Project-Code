@@ -1,3 +1,9 @@
+/*
+Expense App
+12/5/18
+CSCI 3308
+Afterschoolspecials
+*/
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -50,7 +56,7 @@ class App extends Component {
   }
 
   handleNewExpenseCategoryChange = (e, { value }) => this.setState({ newExpenseCategory: value })
-
+//Function to calculate the total cost of expenses for a category
   calculateTotal = (category) => {
     let total = 0.0
     category.lineItems.forEach(lineItem => {
@@ -76,7 +82,7 @@ class App extends Component {
         </div>
       )
     }
-
+//If the user has an existing budget
     if (budget) {
       const budgetCategories = budget.categories.map((category, index) =>
         <Container key={category.id} style={{ marginBottom: 20 }}>
@@ -95,18 +101,18 @@ class App extends Component {
               <Modal.Content>
                 <p>
                   Are you sure you want to delete this category and all the expenses with it?
-</p>
+                </p>
               </Modal.Content>
               <Modal.Actions>
                 <Button onClick={this.handleClose} basic color='red' inverted>
                   <Icon name='remove' /> No
-</Button>
+                </Button>
                 <Button color='green' inverted onClick={() => {
                   this.deleteCategory(this.state.categorySelectedForDelete)
                   this.handleClose()
                 }}>
                   <Icon name='checkmark' /> Yes
-</Button>
+                </Button>
               </Modal.Actions>
             </Modal>
           </Divider>
@@ -244,6 +250,7 @@ class App extends Component {
 
   handleClose = () => this.setState({ modalOpen: false })
 
+  //Function to calculate the remaning percent available for categories
   calculateRemainingTotalBudget = () => {
     const { budget } = this.state
     let totalPrecent = 1.0
@@ -254,6 +261,7 @@ class App extends Component {
     return Math.abs(totalPrecent * 100)
   }
 
+  //Function to see if the user is able to create a category with the given percent
   canCreateCategory = () => {
     return (this.calculateRemainingTotalBudget() <= 0) ? false : true
   }
@@ -261,17 +269,21 @@ class App extends Component {
   calculateRemaining = (category) => {
     return (this.calculateCategoryTotal(category.precent) - this.calculateTotal(category)).toFixed(2)
   }
+
+  //Function to see if the user has gone over budget in the category
   isOverBudget = (category) => {
     const { budget } = this.state
     return ((this.calculateCategoryTotal(category.precent) - this.calculateTotal(category)).toFixed(2) < 0) ? true : false
   }
+
+  //Function to calulate the amount of money per month for a category
   calculateCategoryTotal = (precent) => {
     const { budget } = this.state
     return budget.maxBudget * precent
   }
 
+  //query to get the budget for a user, which returns all the categories for that budget, and all the line items for each category
   getUserBudget() {
-    // Simple query
     const userBudgetQuery = `query ($userId: String) {
       listUserBudgets(filter: {userID: {eq: $userId}}) {
         items {
@@ -296,7 +308,6 @@ class App extends Component {
     const parameters = { "userId": user.username }
     API.graphql(graphqlOperation(userBudgetQuery, parameters))
       .then(results => {
-        console.log("MJV results => ", JSON.stringify(results))
         const data = results.data.listUserBudgets.items
         if (data.length > 0) {
           const FIRST = 0
@@ -305,11 +316,12 @@ class App extends Component {
         this.setState({ hasLoadedBudget: true })
       })
       .catch(err => {
-        console.log("MJV ERROR => ", err)
+        console.log("ERROR => ", err)
       })
 
   }
 
+//Query to create a new user budget
   createUserBudget() {
     const userBudgetQuery = `mutation ($userId: String!, $maxBudget: Float!) {
       createUserBudget(input: {userID: $userId, maxBudget: $maxBudget}) {
@@ -326,7 +338,7 @@ class App extends Component {
         this.getUserBudget()
       })
       .catch(err => {
-        console.log("MJV ERROR => ", err)
+        console.log("ERROR => ", err)
       })
   }
 
@@ -354,18 +366,23 @@ class App extends Component {
       })
   }
 
+//Function to create a category
   createCategory() {
     const { newCategoryPrecent, newCategoryTitle, budget } = this.state
+    //Checks to see if the user entered a decimal
     if (isNaN(newCategoryPrecent)) {
       this.setState({ creatingCategoryError: "Percent must be a decimal" })
       return
     }
+    //Checks to see if there is enough percent remaining
     if (Number.parseFloat(newCategoryPrecent) * 100 > this.calculateRemainingTotalBudget()) {
       this.setState({ creatingCategoryError: "Cannot exceed available remaining percent of " + this.calculateRemainingTotalBudget().toFixed(0) + "%" })
       return
     }
+    //Checks to see if the fields are blank
     if (newCategoryPrecent != "" && newCategoryTitle != "") {
       this.setState({ creatingCategory: true })
+      //Query to create a category
       const createCategoryQuery = `mutation ($budgetId: String!, $title: String!, $precent: Float) {
         createBudgetCategory(input: {budgetID: $budgetId, title: $title, precent: $precent}) {
           id
@@ -384,15 +401,18 @@ class App extends Component {
         })
     }
   }
-
+//Function to create an expense
   createExpense() {
     const { newExpenseCategory, newExpensePrice, newExpenseDesc, budget } = this.state
+    //Makes sure user entered a number
     if (isNaN(newExpensePrice)) {
       this.setState({ creatingExpenseError: "Price must be a number" })
       return
     }
+    //Makes sure both fields are filled out
     if (newExpenseCategory && newExpensePrice != "" && newExpenseDesc != "") {
       this.setState({ creatingExpense: true })
+      //Query to create an expense in a category
       const createExpenseQuery = `mutation ($budgetId: String!, $userId: String! $categoryId: String!, $price: Float!, $title: String!) {
         createLineItem(input: {budgetID: $budgetId, userID: $userId, categoryID: $categoryId, price: $price, title: $title}) {
           id
