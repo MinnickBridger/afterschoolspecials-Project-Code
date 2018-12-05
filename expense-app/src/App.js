@@ -4,7 +4,7 @@ import './App.css';
 import Amplify, { API, graphqlOperation, Auth } from 'aws-amplify';
 import aws_exports from './aws-exports';
 import { withAuthenticator } from 'aws-amplify-react';
-import { Button, Container, Icon, Label, Input, Dimmer, Loader, Segment, Divider, Grid, Header, Form, Message, Modal } from 'semantic-ui-react';
+import { Button, Container, Icon, Label, Input, Dimmer, Loader, Segment, Divider, Grid, Header, Form, Message, Modal, Image } from 'semantic-ui-react';
 Amplify.configure(aws_exports);
 
 class App extends Component {
@@ -69,6 +69,7 @@ class App extends Component {
         <div className="App">
           <body style={{ paddingTop: 15 }}>
             <Container>
+              <Image centered style={{ marginTop: 20, marginBottom: 20 }} src={require('./logobudget.png')} size='small' />
               <Label>Loading budget...</Label>
             </Container>
           </body>
@@ -127,6 +128,7 @@ class App extends Component {
       return (
         <div className="App">
           <body style={{ paddingTop: 15 }}>
+            <Image centered style={{ marginTop: 20, marginBottom: 20 }} src={require('./logobudget.png')} size='small' />
             <div style={{ margin: 10 }}>
               <Label>Total Monthly Budget: ${budget.maxBudget}</Label>
             </div>
@@ -219,12 +221,13 @@ class App extends Component {
         <div className="App">
           <body style={{ paddingTop: 15 }}>
             <Container>
+              <Image centered style={{ marginTop: 20, marginBottom: 20 }} src={require('./logobudget.png')} size='small' />
               <div>
                 <Label>Let's create your monthly budget!</Label>
               </div>
               <div style={{ marginTop: 10 }}>
                 <Input error={isNaN(this.state.newBudgetMax)} label="$" placeholder="Enter your monthly budget" fluid onChange={(e, { value }) => {
-                    this.setState({ newBudgetMax: value })
+                  this.setState({ newBudgetMax: value })
                 }} />
               </div>
               <div style={{ marginTop: 10 }}>
@@ -362,7 +365,7 @@ class App extends Component {
       return
     }
     if (newCategoryPrecent != "" && newCategoryTitle != "") {
-      this.setState({ creatingCategory: true })      
+      this.setState({ creatingCategory: true })
       const createCategoryQuery = `mutation ($budgetId: String!, $title: String!, $precent: Float) {
         createBudgetCategory(input: {budgetID: $budgetId, title: $title, precent: $precent}) {
           id
