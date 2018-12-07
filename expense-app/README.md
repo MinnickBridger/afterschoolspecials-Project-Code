@@ -1,3 +1,16 @@
+Instructions on how to use app:
+
+1. Type this URL in any web browser:
+http://expenseapp-20181114102808--hostingbucket.s3-website-us-east-1.amazonaws.com
+
+2. If you do not have an account, create an account and sign in.
+
+3. Once signed in, user can create budget and start tracking expenses.
+
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
