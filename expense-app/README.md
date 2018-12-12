@@ -1,3 +1,6 @@
+Budgeting App Overview:
+This app is a budgeting tool that can be used by anyone who wants to track his or her finances. Users will create an account and apply how much money they would like to spend each month (monthly income or budget). The user then adds categories that they spend their money on, for example a user might have utilities, food and groceries, savings, housing, emergency fund etc. After the user allocates their monthly budget for each of the categories the user can then start adding their daily expenses. For example if the user got groceries for $55.87, they can add that expense to their food and grocery category. The app keeps tracks of all the users expenses and tells the user how much money they have spent in each category, how much they have left to spend for each category. If the user goes over budget, the app will tell them and show how much over budget they are for that category. When the user wants to restart after the month is up, they can reset the budget and start again.
+
 Instructions on how to use app:
 
 1. Type this URL in any web browser:
